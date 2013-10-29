@@ -1,0 +1,15 @@
+A basic wiki server written in go
+  
+  - Allows you to create new pages
+  - Allows interlinking of pages
+  - Allows editing of existing pages
+  - Allows you to write text in markdown
+  - Allows you to see a version history of a page
+  - Allows inclusion of other media
+      - images
+      - video
+      - pdfs
+      - audio
+  - Allows you to download a copy to your local computer
+  - Allows you to run it off of the local computer
+  - Uses git for versioning?
