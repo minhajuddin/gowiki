@@ -1,6 +1,7 @@
 <h1>Edit {{.Title}}</h1>
 <form action="/{{.Title}}" method="post">
-  <input type="text" name="title" value="{{.Title}}" />
-  <textarea name='body'>{{printf "%s" .Body}}</textarea>
+  <br />
+  <textarea name='body' rows=10 cols=200>{{printf "%s" .Body}}</textarea>
+  <br />
   <input type="submit" value="Save" />
 </form>
