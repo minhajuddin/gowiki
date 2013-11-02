@@ -60,9 +60,8 @@ func EditHandler(w http.ResponseWriter, r *http.Request) {
 
 func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	title := vars["title"]
-	body := r.FormValue("body")
-	ioutil.WriteFile(title, []byte(body), 0600)
+	page := &Page{Title: vars["title"], Body: []byte(r.FormValue("body"))}
+	SavePage(page)
 	http.Redirect(w, r, "/"+vars["title"], http.StatusFound)
 	return
 }
@@ -76,12 +75,21 @@ func (self *Page) RenderedBody() template.HTML {
 	return template.HTML(self.Body)
 }
 
+// file storage
 func GetPage(title string) (*Page, error) {
-	bytes, err := ioutil.ReadFile(title)
+	bytes, err := ioutil.ReadFile(PathForPage(&Page{Title: title}))
 	if err != nil {
 		return nil, err
 	}
 	return &Page{Title: title, Body: bytes}, nil
+}
+
+func SavePage(p *Page) error {
+	return ioutil.WriteFile(PathForPage(p), p.Body, 0600)
+}
+
+func PathForPage(p *Page) string {
+	return "./data/" + p.Title
 }
 
 //type PageStore interface {
