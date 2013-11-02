@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	_ "github.com/russross/blackfriday"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -22,9 +23,14 @@ func main() {
 }
 
 func configureRoutes(r *mux.Router) {
+	r.HandleFunc("/", RootHandler).Methods("GET")
 	r.HandleFunc("/{title:[a-zA-Z0-9_-]+}", ViewHandler).Methods("GET")
 	r.HandleFunc("/{title:[a-zA-Z0-9_-]+}/edit", EditHandler).Methods("GET")
 	r.HandleFunc("/{title:[a-zA-Z0-9_-]+}", UpdateHandler).Methods("POST")
+}
+
+func RootHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/home", http.StatusFound)
 }
 
 func ViewHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +70,10 @@ func UpdateHandler(w http.ResponseWriter, r *http.Request) {
 type Page struct {
 	Title string
 	Body  []byte
+}
+
+func (self *Page) RenderedBody() template.HTML {
+	return template.HTML(self.Body)
 }
 
 func GetPage(title string) (*Page, error) {

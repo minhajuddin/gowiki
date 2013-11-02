@@ -1,4 +1,7 @@
 <h1>{{.Title}}</h1>
+<a href='/{{.Title}}/edit'>
+  Edit
+</a>
 <div>
-  {{printf "%s" .Body}}
+  {{.RenderedBody}}
 </div>
